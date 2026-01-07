@@ -9,10 +9,11 @@ import {
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useTheme } from "next-themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCopy, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const MainContent = () => {
   const [descText, setDescText] = useState("");
+  const [showCopySuccess, setCopySuccess] = useState(false);
   const { data, isLoading, error, parseDesc } = useParseDesc();
   const { theme } = useTheme();
 
@@ -28,6 +29,10 @@ const MainContent = () => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(JSON.stringify(data));
+      setCopySuccess(true);
+      setTimeout(() => {
+        setCopySuccess(false);
+      }, 800)
     } catch (err) {
       console.error("Could not copy text");
     }
@@ -36,7 +41,7 @@ const MainContent = () => {
   return (
     <main className="flex flex-col grow h-full px-3">
       <ActionsBar
-        disableParseDesc={!descText.trim()}
+        disableParseDesc={!descText.trim() || isLoading}
         onParseDesc={handleParseDesc}
         onReset={handleReset}
       />
@@ -91,7 +96,7 @@ const MainContent = () => {
                 className="cursor-pointer text-1xl w-10 aspect-square border border-stone-300 rounded-lg hover:bg-stone-300 hover:text-stone-800 duration transition-colors ease-in-out absolute top-9 right-9 z-20"
                 onClick={handleCopy}
               >
-                <FontAwesomeIcon icon={faCopy} />
+                <FontAwesomeIcon icon={showCopySuccess ? faCheck : faCopy} />
               </button>
             </>
           )}

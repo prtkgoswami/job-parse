@@ -27,6 +27,8 @@ Rules:
 - otherImportantData is an object for any other relevant info (benefits, tech stack, etc.)
 - Return ONLY the JSON object, no markdown code blocks, no explanations
 - Let the State and Country fields be the codes and not the entire word
+- Include any Qualifications - Both Required and Preferred or Nice to Have, in the requirements object
+- For Hybrid Job Type, put any information about Number of onsite workdays in office in otherImportantData
 `;
 
 export async function POST(request: Request) {
